@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invisible Thief | Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-ui">
+        <h1>🕵️‍♂️ Invisible Thief</h1>
+        
+        <div id="setup-screen">
+            <p>Selecciona tu rol para comenzar:</p>
+            <button onclick="chooseRole('thief')">Ser Ladrón</button>
+            <button onclick="chooseRole('detective')">Ser Detective</button>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="stats">
+                <span id="player-role">Rol: ---</span> | 
+                <span id="turn-count">Turno: 1</span>
+            </div>
+            
+            <div id="board" class="grid"></div>
+            
+            <div class="messages">
+                <p id="hint">Esperando al otro jugador...</p>
+                <div id="log"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

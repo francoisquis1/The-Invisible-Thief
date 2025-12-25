@@ -1,0 +1,49 @@
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --danger: #ef4444;
+    --success: #22c55e;
+}
+
+body {
+    background-color: var(--bg);
+    color: white;
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.hidden { display: none; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 75px);
+    gap: 12px;
+    margin: 20px auto;
+}
+
+.cell {
+    width: 75px;
+    height: 75px;
+    background: var(--card);
+    border: 2px solid #334155;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cell:hover { border-color: var(--accent); background: #334155; }
+
+/* Feedback visual */
+.cell.thief-here { background: var(--success); border-color: #4ade80; }
+.cell.guessed { background: var(--danger); }
+
+#log {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    height: 60px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
