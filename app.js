@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // --- CONFIGURACIÓN DE RED (PeerJS) ---
 const peer = new Peer(); 
 let conn = null;
@@ -14,78 +15,82 @@ let myRole = null;
 let thiefPosition = null; 
 let turn = 'thief'; // El ladrón siempre empieza escondiéndose
 let gameStarted = false;
+=======
+const peer = new Peer();
+let conn;
+let myRole = null;
+let thiefPos = null;
+let turn = 'thief';
+>>>>>>> 256f3d9d12ff04d10b3f35f966e9a8db2a41f2b0
 
-// --- INICIALIZACIÓN DE PEERJS ---
+peer.on('open', (id) => document.getElementById('my-id').innerText = id);
 
-// Mostrar tu ID cuando se conecte al servidor de PeerJS
-peer.on('open', (id) => {
-    myIdDisplay.innerText = id;
+peer.on('connection', (c) => {
+    conn = c;
+    setupData();
+    alert("¡Amigo conectado!");
 });
 
-// Escuchar cuando alguien intenta conectarse a ti (Tú eres el Host)
-peer.on('connection', (connection) => {
-    conn = connection;
-    setupDataExchange();
-    alert("¡Jugador conectado! Ya pueden empezar.");
-});
-
-// Función para conectar con tu amigo (Tú eres el Invitado)
 function connectToFriend() {
-    const remoteId = remoteIdInput.value;
-    if (!remoteId) return alert("Pega el ID de tu amigo primero");
-    
-    conn = peer.connect(remoteId);
-    setupDataExchange();
+    const rId = document.getElementById('remote-id').value;
+    conn = peer.connect(rId);
+    setupData();
 }
 
-// Configurar qué pasa cuando recibes datos
-function setupDataExchange() {
-    conn.on('open', () => {
-        console.log("Conexión establecida.");
-    });
-
+function setupData() {
     conn.on('data', (data) => {
         if (data.type === 'move') {
-            // El detective recibe el aviso de que el ladrón se movió
-            thiefPosition = data.pos; 
+            thiefPos = data.pos;
+            updateStatus("Ladrón oculto. ¡Tu turno, Detective!");
             turn = 'detective';
-            statusElement.innerText = "¡El Ladrón se ha movido! Tu turno, Detective.";
-        } 
-        else if (data.type === 'guess') {
-            // El ladrón recibe el disparo del detective
+        }
+        if (data.type === 'guess') {
             processGuess(data.index);
+        }
+        if (data.type === 'result') {
+            showGuessResult(data.index, data.dist);
         }
     });
 }
-
-// --- LÓGICA DEL JUEGO ---
 
 function chooseRole(role) {
     myRole = role;
     document.getElementById('setup-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
-    document.getElementById('player-role').innerText = `Rol: ${role === 'thief' ? 'Ladrón 🥷' : 'Detective 🕵️‍♂️'}`;
-    
-    if (role === 'thief') {
-        statusElement.innerText = "Elige tu escondite inicial";
-    } else {
-        statusElement.innerText = "Espera a que el ladrón se esconda...";
+    document.getElementById('player-role-badge').innerText = role.toUpperCase();
+    createBoard();
+}
+
+function createBoard() {
+    const board = document.getElementById('board');
+    for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.onclick = () => handleClick(i);
+        cell.id = `cell-${i}`;
+        board.appendChild(cell);
     }
 }
 
+<<<<<<< HEAD
 function handleCellClick(index) {
     if (!conn || !conn.open) return alert("Primero conéctate con un amigo");
     if (!myRole) return alert("Primero elige tu rol");
 
     // LÓGICA DEL LADRÓN
+=======
+function handleClick(i) {
+    if (!conn) return alert("Conecta con un amigo primero");
+    
+>>>>>>> 256f3d9d12ff04d10b3f35f966e9a8db2a41f2b0
     if (myRole === 'thief' && turn === 'thief') {
-        thiefPosition = index;
-        updateBoardVisuals();
-        
-        // Enviamos la posición al detective (aunque él no la vea, su app la necesita para calcular distancia)
-        conn.send({ type: 'move', pos: index });
-        
+        thiefPos = i;
+        conn.send({ type: 'move', pos: i });
+        document.querySelectorAll('.cell').forEach(c => c.classList.remove('thief-here'));
+        document.getElementById(`cell-${i}`).classList.add('thief-here');
+        updateStatus("Te has escondido...");
         turn = 'detective';
+<<<<<<< HEAD
         statusElement.innerText = "¡Te has escondido! Turno del detective...";
     } 
     // LÓGICA DEL DETECTIVE
@@ -113,36 +118,30 @@ function processGuess(index) {
         // Avisar victoria (opcional implementar más mensajes)
     } else {
         statusElement.innerText = `El Detective falló (distancia: ${distance}). ¡Muévete!`;
+=======
+    } else if (myRole === 'detective' && turn === 'detective') {
+        conn.send({ type: 'guess', index: i });
+>>>>>>> 256f3d9d12ff04d10b3f35f966e9a8db2a41f2b0
         turn = 'thief';
     }
 }
 
-function calculateDistance(idx1, idx2) {
-    const x1 = idx1 % 4, y1 = Math.floor(idx1 / 4);
-    const x2 = idx2 % 4, y2 = Math.floor(idx2 / 4);
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+function processGuess(idx) {
+    const dist = calculateDist(idx, thiefPos);
+    conn.send({ type: 'result', index: idx, dist: dist });
+    showGuessResult(idx, dist);
 }
 
-function updateBoardVisuals() {
-    document.querySelectorAll('.cell').forEach((cell, i) => {
-        cell.classList.toggle('thief-here', myRole === 'thief' && i === thiefPosition);
-    });
+function calculateDist(i1, i2) {
+    return Math.abs((i1 % 4) - (i2 % 4)) + Math.abs(Math.floor(i1 / 4) - Math.floor(i2 / 4));
 }
 
-function renderGuess(index, dist) {
-    const cell = document.querySelector(`[data-index="${index}"]`);
+function showGuessResult(idx, dist) {
+    const cell = document.getElementById(`cell-${idx}`);
     cell.classList.add('guessed');
     cell.innerText = dist;
+    updateStatus(dist === 0 ? "¡ATRAPADO!" : `Distancia: ${dist}. Turno Ladrón.`);
+    turn = 'thief';
 }
 
-function createBoard() {
-    for (let i = 0; i < BOARD_SIZE; i++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.dataset.index = i;
-        cell.addEventListener('click', () => handleCellClick(i));
-        boardElement.appendChild(cell);
-    }
-}
-
-createBoard();
+function updateStatus(msg) { document.getElementById('game-status').innerText = msg; }
