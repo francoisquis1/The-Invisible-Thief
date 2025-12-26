@@ -1,49 +1,65 @@
 :root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --accent: #38bdf8;
-    --danger: #ef4444;
-    --success: #22c55e;
+    --bg: #0a0e14;
+    --thief: #00ff88;
+    --detective: #38bdf8;
+    --danger: #ff4b2b;
 }
 
 body {
-    background-color: var(--bg);
+    background: var(--bg);
     color: white;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
-.hidden { display: none; }
+#game-ui {
+    width: 90%;
+    max-width: 450px;
+    background: #161b22;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #30363d;
+}
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, 75px);
-    gap: 12px;
-    margin: 20px auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 20px 0;
 }
 
 .cell {
-    width: 75px;
-    height: 75px;
-    background: var(--card);
-    border: 2px solid #334155;
+    aspect-ratio: 1;
+    background: #21262d;
+    border: 2px solid #30363d;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
-.cell:hover { border-color: var(--accent); background: #334155; }
+.cell:hover { border-color: var(--detective); transform: scale(1.05); }
 
-/* Feedback visual */
-.cell.thief-here { background: var(--success); border-color: #4ade80; }
-.cell.guessed { background: var(--danger); }
+/* Estados especiales */
+.cell.thief-here { border-color: var(--thief); background: rgba(0, 255, 136, 0.1); }
+.cell.guessed { background: rgba(255, 75, 43, 0.2); border-color: var(--danger); }
+.hidden { display: none; }
 
-#log {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    height: 60px;
-    overflow-y: auto;
-    margin-top: 10px;
+button {
+    background: var(--detective);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
+
+.btn-role.thief { background: var(--thief); color: black; }
