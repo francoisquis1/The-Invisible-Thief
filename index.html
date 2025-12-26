@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
-    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invisible Thief | Online</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-ui">
         <h1>🕵️‍♂️ Invisible Thief</h1>
         
+        <div id="connection-panel" style="background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155;">
+            <p style="margin-top: 0;">🆔 Tu ID: <strong id="my-id" style="color: #38bdf8; font-family: monospace;">Cargando...</strong></p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <input type="text" id="remote-id" placeholder="Pega el ID de tu amigo" style="padding: 8px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: white; flex: 1; max-width: 200px;">
+                <button onclick="connectToFriend()" style="background: #38bdf8; color: #0f172a; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer;">🔗 Conectar</button>
+            </div>
+        </div>
+
         <div id="setup-screen">
             <p>Selecciona tu rol para comenzar:</p>
-            <button onclick="chooseRole('thief')">Ser Ladrón</button>
-            <button onclick="chooseRole('detective')">Ser Detective</button>
+            <button class="role-btn" onclick="chooseRole('thief')">Ser Ladrón</button>
+            <button class="role-btn" onclick="chooseRole('detective')">Ser Detective</button>
         </div>
 
         <div id="game-screen" class="hidden">
@@ -27,14 +34,12 @@
             <div id="board" class="grid"></div>
             
             <div class="messages">
-                <p id="hint">Esperando al otro jugador...</p>
+                <p id="status">Esperando al otro jugador...</p>
                 <div id="log"></div>
             </div>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
