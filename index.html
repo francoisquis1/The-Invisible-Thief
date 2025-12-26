@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invisible Thief | Online</title>
+    <title>🕵️ Invisible Thief - Multiplayer</title>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,7 +12,7 @@
         <header>
             <h1>🕵️‍♂️ Invisible Thief</h1>
             <div id="connection-status">
-                <p>Tu ID: <span id="my-id">...</span></p>
+                <p>Tu ID: <span id="my-id">Cargando...</span></p>
                 <div class="input-group">
                     <input type="text" id="remote-id" placeholder="ID de tu amigo">
                     <button onclick="connectToFriend()">🔌 Conectar</button>
@@ -22,10 +22,10 @@
 
         <main>
             <div id="setup-screen">
-                <h2>Elige tu bando</h2>
+                <h2>Elige tu rol</h2>
                 <div class="role-selection">
-                    <button class="btn-role thief" onclick="chooseRole('thief')">Ser Ladrón</button>
-                    <button class="btn-role detective" onclick="chooseRole('detective')">Ser Detective</button>
+                    <button class="btn-role thief" onclick="chooseRole('thief')">🥷 Ladrón</button>
+                    <button class="btn-role detective" onclick="chooseRole('detective')">🕵️ Detective</button>
                 </div>
             </div>
 
@@ -39,6 +39,7 @@
             </div>
         </main>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
