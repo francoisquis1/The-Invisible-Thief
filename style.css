@@ -13,9 +13,62 @@ body {
     display: flex;
     justify-content: center;
     padding: 20px;
+    margin: 0;
+}
+
+#game-ui {
+    max-width: 600px;
+    width: 100%;
+}
+
+#game-ui h1 {
+    text-align: center;
+    margin-top: 0;
+    font-size: 2.5rem;
 }
 
 .hidden { display: none; }
+
+#setup-screen {
+    text-align: center;
+    padding: 20px;
+    background: var(--card);
+    border-radius: 12px;
+}
+
+.role-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 12px 24px;
+    margin: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.role-btn:hover {
+    background: #22d3ee;
+    transform: scale(1.05);
+}
+
+.stats {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    border: 1px solid #334155;
+}
+
+.messages {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
 
 .grid {
     display: grid;
@@ -46,4 +99,15 @@ body {
     height: 60px;
     overflow-y: auto;
     margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(4, 60px);
+    }
+    
+    .cell {
+        width: 60px;
+        height: 60px;
+    }
 }

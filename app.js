@@ -9,10 +9,11 @@ const myIdDisplay = document.getElementById('my-id');
 const remoteIdInput = document.getElementById('remote-id');
 
 // --- VARIABLES DE ESTADO DEL JUEGO ---
-const BOARD_SIZE = 16; 
+const BOARD_SIZE = 16; // 4x4 = 16 celdas
 let myRole = null;
 let thiefPosition = null; 
 let turn = 'thief'; // El ladrón siempre empieza escondiéndose
+let gameStarted = false;
 
 // --- INICIALIZACIÓN DE PEERJS ---
 
@@ -73,7 +74,8 @@ function chooseRole(role) {
 }
 
 function handleCellClick(index) {
-    if (!conn) return alert("Primero conéctate con un amigo");
+    if (!conn || !conn.open) return alert("Primero conéctate con un amigo");
+    if (!myRole) return alert("Primero elige tu rol");
 
     // LÓGICA DEL LADRÓN
     if (myRole === 'thief' && turn === 'thief') {
@@ -92,6 +94,12 @@ function handleCellClick(index) {
         conn.send({ type: 'guess', index: index });
         statusElement.innerText = "Disparando... esperando respuesta del ladrón.";
         turn = 'thief'; // Cambia el turno localmente para esperar
+    }
+    else if (myRole === 'thief' && turn === 'detective') {
+        statusElement.innerText = "Es turno del detective, espera su disparo...";
+    }
+    else if (myRole === 'detective' && turn === 'thief') {
+        statusElement.innerText = "Es turno del ladrón, espera a que se mueva...";
     }
 }
 
